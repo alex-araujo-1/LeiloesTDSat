@@ -1,11 +1,9 @@
 
 package leiloestdsat;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-import leiloestdsat.ProdutosDAO;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
