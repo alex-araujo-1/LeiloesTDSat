@@ -4,12 +4,12 @@
  */
 package leiloestdsat;
 
-
 import java.sql.PreparedStatement;
 import java.sql.Connection;
-import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class ProdutosDAO {
 
@@ -41,12 +41,30 @@ public class ProdutosDAO {
 
     }
     
+ 
+    
+    public void venderProduto(ProdutosDTO proct) {
+
+        String sql = ("UPDATE produtos SET status = ? where id = ?");
+
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, proct.getStatus());
+            stmt.setInt(2, proct.getId());
+            stmt.execute();
+
+        } catch (Exception ex) {
+            System.out.println("Erro ao encontrar produto: " + ex.getMessage());
+        }
+    }
     
 
+    
     public List<ProdutosDTO> listarProdutos() {
         String sql = "SELECT * FROM produtos";
 
         try {
+            
             PreparedStatement stmt = this.conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
 
@@ -67,6 +85,38 @@ public class ProdutosDAO {
         } catch (Exception e) {
             return null;
         }
+    }
+    
+    
+    
+    public List<ProdutosDTO> listarProdutosVendidos() {
+
+        String sql = "SELECT * FROM produtos WHERE status = 'Vendido' ";
+
+        try {
+            PreparedStatement stmt = this.conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            List<ProdutosDTO> listaProdutos_V = new ArrayList<>();
+
+            while (rs.next()) {
+                ProdutosDTO produtoV = new ProdutosDTO();
+
+                produtoV.setId(rs.getInt("id"));
+                produtoV.setNome(rs.getString("nome"));
+                produtoV.setValor(rs.getInt("valor"));
+                produtoV.setStatus(rs.getString("status"));
+
+                listaProdutos_V.add(produtoV);
+
+            }
+
+            return listaProdutos_V;
+
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
 }
